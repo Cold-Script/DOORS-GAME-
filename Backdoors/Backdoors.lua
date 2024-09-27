@@ -262,7 +262,7 @@ Toggles.NoFog:OnChanged(function(value)
 if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
     if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
 
-    game.Lighting.FogStart = value and 0 or Lighting:GetAttribute("FogStart")
+    game.Lighting.FogStart = value and 0 or game.Lighting:GetAttribute("FogStart")
     game.Lighting.FogEnd = value and math.huge or game.Lighting:GetAttribute("FogEnd")
 
     local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
