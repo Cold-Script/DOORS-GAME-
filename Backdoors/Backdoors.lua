@@ -119,14 +119,9 @@ Toggles.EnableJump:OnChanged(function(value)
 game.Players.LocalPlayer.Character:SetAttribute("CanJump", value)
 end)
 Group:AddDivider()
-Group:AddButton({Text="Reset",Func = function() end}):AddButton({Text="Lobby",Func = function() end})
-Group:AddButton({Text="Play Again",Func = function() end}):AddButton({Text="Revive",Func = function() end})
-game:GetService("RunService").RenderStepped:Connect(function()
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed or 16
-game.Players.LocalPlayer.Character.Humanoid.MaxSlopeAngle = _G.MaxAngle or 30
-workspace.CurrentCamera.FieldOfView = _G.FOV or 70
-workspace.Gravity = _G.Gravity or 150
-end)
+Group:AddButton({Text="Reset",DoubleClick=true,Func = function()game.Players.LocalPlayer.Character.Humanoid.Health = 0 end}):AddButton({Text="Lobby",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer() end})
+Group:AddButton({Text="Play Again",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.PlayAgain:FireServer() end}):AddButton({Text="Revive",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.Revive:FireServer() end})
+
 local Group2 = Tab:AddLeftGroupbox("Misc")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
 if _G.FastCloset and game.Players.LocalPlayer.Character:GetAttribute("Hiding")==true then 
@@ -150,3 +145,89 @@ Group2:AddToggle("Toggle",{
     Callback = function(value)
 _G.OpenDoorFar = value
 end})
+Group2:AddToggle("PromptClip",{
+    Text = "Prompt Clip",
+    Default = false,
+})
+Toggles.PromptClip:OnChanged(function(value)
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = value
+end
+end
+end)
+Group2:AddSlider("",{
+    Text="Prompt Range",
+    Default=1,
+    Min=1,Max=30,
+    Rounding=1,
+    Compact=true,
+    Callback = function(v)
+   _G.RangePrompt = v 
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed or 16
+game.Players.LocalPlayer.Character.Humanoid.MaxSlopeAngle = _G.MaxAngle or 30
+workspace.CurrentCamera.FieldOfView = _G.FOV or 70
+workspace.Gravity = _G.Gravity or 150
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = _G.RangePrompt
+end
+end
+end)
+Group2:AddDivider()
+Group2:AddToggle("AntiLag",{
+    Text = "Anti Lag",
+    Default = false,
+})
+Toggles.AntiLag:OnChanged(function(value)
+for _, object in pairs(workspace:GetDescendants()) do
+        if object:IsA("BasePart") then
+            if not object:GetAttribute("Material") then object:SetAttribute("Material", object.Material) end
+            if not object:GetAttribute("Reflectance") then object:SetAttribute("Reflectance", object.Reflectance) end
+
+            object.Material = value and Enum.Material.Plastic or object:GetAttribute("Material")
+            object.Reflectance = value and 0 or object:GetAttribute("Reflectance")
+        elseif object:IsA("Decal") then
+            if not object:GetAttribute("Transparency") then object:SetAttribute("Transparency", object.Transparency) end
+        end
+    end
+
+    workspace.Terrain.WaterReflectance = value and 0 or 1
+    workspace.Terrain.WaterTransparency = value and 0 or 1
+    workspace.Terrain.WaterWaveSize = value and 0 or 0.05
+    workspace.Terrain.WaterWaveSpeed = value and 0 or 8
+end)
+Group2:AddToggle("Toggle",{
+    Text = "Fullbright",
+    Default = false,
+    Callback = function(value)
+if value then
+game.Lighting.Brightness = 3
+game.Lighting.GlobalShadows = false
+game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
+else
+game.Lighting.Brightness = 1
+game.Lighting.GlobalShadows = true
+game.Lighting.OutdoorAmbient = Color3.new(0,0,0)
+end
+end})
+Group2:AddToggle("NoFog",{
+    Text = "No Fog",
+    Default = false,
+})
+Toggles.NoFog:OnChanged(function(value)
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+    if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+
+    game.Lighting.FogStart = value and 0 or Lighting:GetAttribute("FogStart")
+    game.Lighting.FogEnd = value and math.huge or game.Lighting:GetAttribute("FogEnd")
+
+    local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+    if fog then
+        if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+
+        fog.Density = value and 0 or fog:GetAttribute("Density")
+	end
+end)
