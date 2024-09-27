@@ -61,7 +61,7 @@ end})
 Group:AddDivider()
 
 Group:AddToggle("NoAccount",{
-    Text="No Account",
+    Text="No Account"
 })
 Toggles.NoAccount:OnChanged(function(value)
 game.Players.LocalPlayer.Character.Head.Massless = not value;
@@ -102,7 +102,7 @@ end
 end})
 Group:AddDivider()
 Group:AddToggle("InfJump",{
-    Text="Infinity Jump",
+    Text="Infinity Jump"
 })
 Toggles.InfJump:OnChanged(function(value)
 local InfiniteJumpEnabled = value
@@ -113,7 +113,7 @@ end
 end)
 end)
 Group:AddToggle("EnableJump",{
-    Text="Enabled Jump",
+    Text="Enabled Jump"
 })
 Toggles.EnableJump:OnChanged(function(value)
 game.Players.LocalPlayer.Character:SetAttribute("CanJump", value)
@@ -122,7 +122,7 @@ Group:AddDivider()
 Group:AddButton({Text="Reset",DoubleClick=true,Func = function()game.Players.LocalPlayer.Character.Humanoid.Health = 0 end}):AddButton({Text="Lobby",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer() end})
 Group:AddButton({Text="Play Again",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.PlayAgain:FireServer() end}):AddButton({Text="Revive",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.Revive:FireServer() end})
 
-local Group2 = Tab:AddLeftGroupbox("Misc")
+local Group2 = Tab:AddRightGroupbox("Misc")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
 if _G.FastCloset and game.Players.LocalPlayer.Character:GetAttribute("Hiding")==true then 
 game:GetService("ReplicatedStorage").EntityInfo.CamLock:FireServer()end end)
@@ -147,7 +147,7 @@ _G.OpenDoorFar = value
 end})
 Group2:AddToggle("PromptClip",{
     Text = "Prompt Clip",
-    Default = false,
+    Default = false
 })
 Toggles.PromptClip:OnChanged(function(value)
 for _,v in pairs(workspace:GetDescendants()) do
@@ -179,7 +179,7 @@ end)
 Group2:AddDivider()
 Group2:AddToggle("AntiLag",{
     Text = "Anti Lag",
-    Default = false,
+    Default = false
 })
 Toggles.AntiLag:OnChanged(function(value)
 for _, object in pairs(workspace:GetDescendants()) do
@@ -215,7 +215,7 @@ end
 end})
 Group2:AddToggle("NoFog",{
     Text = "No Fog",
-    Default = false,
+    Default = false
 })
 Toggles.NoFog:OnChanged(function(value)
 if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
