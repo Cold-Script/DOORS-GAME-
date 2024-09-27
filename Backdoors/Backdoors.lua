@@ -57,7 +57,36 @@ Group:AddSlider("",{
     Callback = function(v)
    _G.MaxAngle = v 
 end})
-
+Group:AddSlider("Body", {
+        Text = "Body Transparency",
+        Default = 0,
+        Min = 0,
+        Max = 1,
+        Rounding = 1,
+	Compact = true,		
+	Callback = function(value)	
+_G.Body = value				
+end})
+game:GetService("RunService").RenderStepped:Connect(function()			
+pcall(function()			
+game.Players.LocalPlayer.Character.Head.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.LeftFoot.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.LeftHand.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.LeftLowerArm.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.LeftLowerLeg.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.LeftUpperArm.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.LeftUpperLeg.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.LowerTorso.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.RightFoot.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.RightFoot.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.RightHand.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.RightLowerArm.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.RightLowerLeg.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.RightUpperArm.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.RightUpperLeg.Transparency = _G.Body;
+game.Players.LocalPlayer.Character.UpperTorso.Transparency = _G.Body;	
+end)
+end)		
 Group:AddDivider()
 
 Group:AddToggle("NoAccount",{
@@ -119,8 +148,8 @@ Toggles.EnableJump:OnChanged(function(value)
 game.Players.LocalPlayer.Character:SetAttribute("CanJump", value)
 end)
 Group:AddDivider()
-Group:AddButton({Text="Reset",DoubleClick=true,Func = function()game.Players.LocalPlayer.Character.Humanoid.Health = 0 end}):AddButton({Text="Lobby",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer() end})
-Group:AddButton({Text="Play Again",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.PlayAgain:FireServer() end}):AddButton({Text="Revive",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").RemotesFolder.Revive:FireServer() end})
+Group:AddButton({Text="Reset",DoubleClick=true,Func = function()game.Players.LocalPlayer.Character.Humanoid.Health = 0 end}):AddButton({Text="Lobby",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Lobby:FireServer() end})
+Group:AddButton({Text="Play Again",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.PlayAgain:FireServer() end}):AddButton({Text="Revive",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Revive:FireServer() end})
 
 local Group2 = Tab:AddRightGroupbox("Misc")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
