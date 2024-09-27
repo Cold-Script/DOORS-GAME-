@@ -245,7 +245,7 @@ Group2:AddToggle("Toggle",{
     Default = false,
     Callback = function(value)
 if value then
-game.Lighting.Brightness = 3
+game.Lighting.Brightness = 1.75
 game.Lighting.GlobalShadows = false
 game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
 else
@@ -254,6 +254,7 @@ game.Lighting.GlobalShadows = true
 game.Lighting.OutdoorAmbient = Color3.new(0,0,0)
 end
 end})
+
 Group2:AddToggle("NoFog",{
     Text = "No Fog",
     Default = false
@@ -296,12 +297,36 @@ Group2:AddToggle("Toggle",{
     Callback = function(value)
 _G.PlaySound = value
 end})
+_G.Volume = 1
 Group2:AddSlider("",{
     Text="Volume",
-    Default=0,
-    Min=0,Max=100,
+    Default=1,
+    Min=1,Max=5,
     Rounding=1,
     Compact=true,
     Callback = function(v)
 _G.Volume = v
+end})
+Group2:AddDivider()
+Group2:AddToggle("",{
+	Text = "Auto TimerLever",
+	Callback = function(v)
+_G.AutoTimer = v
+end})
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "TimerLever" then
+spawn(function()
+while task.wait() do
+if Distance(v:FindFirstChildWhichIsA("BasePart")) and _G.AutoTimer then
+fireproximityprompt(v.ActivateEventPrompt)
+end
+end
+end)
+end
+end
+
+Group2:AddButton({Text="No Haste Jumpcare",DoubleClick=true,Func = function()
+if game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote:FindFirstChild("Haste") then
+	game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote.Haste:Destroy()
+end
 end})
