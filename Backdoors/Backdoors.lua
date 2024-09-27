@@ -1,3 +1,15 @@
+function Distance(part, extra)
+	if not extra then extra = 15 end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not part then
+		return false
+	end
+	local distanceToPart = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part.Position).magnitude
+	if distanceToPart <= extra then
+		return true
+	end
+	return false
+end
+
 local repo = "https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/"
 
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
@@ -19,6 +31,19 @@ local Tab = Window:AddTab("Main")
 local Tab3 = Window:AddTab("ESP")
 local Tab4 = Window:AddTab("Configs")
 
+function notify(name)
+Library:Notify(name)
+if _G.PlaySound then
+local sound = Instance.new("Sound", workspace) do
+sound.SoundId = "rbxassetid://4590662766"
+sound.Volume = _G.Volume or 2
+sound.PlayOnRemove = true
+sound:Destroy()
+end
+end
+end
+
+
 local Group = Tab:AddLeftGroupbox("Players")
 Group:AddSlider("",{
     Text="WalkSpeed",
@@ -37,16 +62,6 @@ Group:AddSlider("",{
     Compact=true,
     Callback = function(v)
    _G.FOV = v 
-end})
-Group:AddSlider("",{
-    Text="Gravity",
-    Default=150,
-    Min=0,
-    Max=150,
-    Rounding=1,
-    Compact=true,
-    Callback = function(v)
-   _G.Gravity = v 
 end})
 Group:AddSlider("",{
     Text="Max Slope Angle",
@@ -130,16 +145,16 @@ v.CanCollide = true
 end 
 end})
 Group:AddDivider()
-Group:AddToggle("InfJump",{
-    Text="Infinity Jump"
+
+Group:AddToggle("SlowJump",{
+    Text="Slow Jump"
 })
-Toggles.InfJump:OnChanged(function(value)
-local InfiniteJumpEnabled = value
-game:GetService("UserInputService").JumpRequest:connect(function()
-if InfiniteJumpEnabled then
-game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+Toggles.SlowJump:OnChanged(function(value)
+if value then
+workspace.Gravity = 25
+else
+workspace.Gravity = 130
 end
-end)
 end)
 Group:AddToggle("EnableJump",{
     Text="Enabled Jump"
@@ -175,13 +190,14 @@ Group2:AddToggle("Toggle",{
 _G.OpenDoorFar = value
 end})
 Group2:AddToggle("PromptClip",{
-    Text = "Prompt Clip",
+    Text = "Reach Prompt Clip",
     Default = false
 })
 Toggles.PromptClip:OnChanged(function(value)
 for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") then
-v.RequiresLineOfSight = value
+v.RequiresLineOfSight = not value
+v.MaxActivationDistance = _G.RangePrompt
 end
 end
 end)
@@ -194,17 +210,13 @@ Group2:AddSlider("",{
     Callback = function(v)
    _G.RangePrompt = v 
 end})
+
 game:GetService("RunService").RenderStepped:Connect(function()
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed or 16
 game.Players.LocalPlayer.Character.Humanoid.MaxSlopeAngle = _G.MaxAngle or 30
 workspace.CurrentCamera.FieldOfView = _G.FOV or 70
-workspace.Gravity = _G.Gravity or 150
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.MaxActivationDistance = _G.RangePrompt
-end
-end
 end)
+
 Group2:AddDivider()
 Group2:AddToggle("AntiLag",{
     Text = "Anti Lag",
@@ -260,3 +272,36 @@ if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("F
         fog.Density = value and 0 or fog:GetAttribute("Density")
 	end
 end)
+Group2:AddDivider()
+Group2:AddToggle("NotifyEntity",{
+    Text = "Notifier Entity",
+    Default = false,
+    Callback = function(v)
+if v then
+EntityNotifier = workspace.ChildAdded:Connect(function(child)
+if child.Name == "BackdoorLookman" then
+notify("[ Notifier Entity ] : Lookman has spawn please dont look it")
+elseif child.Name == "BackdoorRush" and Distance(child:FindFirstChildWhichIsA("BasePart"), 1000) then
+notify("[ Notifier Entity ] :  Blitz has spawn find the closet hide now!")
+end
+end)
+else
+EntityNotifier:Disconnect()
+end
+end})
+_G.PlaySound = true
+Group2:AddToggle("Toggle",{
+    Text = "Play Sound",
+    Default = true,
+    Callback = function(value)
+_G.PlaySound = value
+end})
+Group2:AddSlider("",{
+    Text="Volume",
+    Default=0,
+    Min=0,Max=100,
+    Rounding=1,
+    Compact=true,
+    Callback = function(v)
+_G.Volume = v
+end})
