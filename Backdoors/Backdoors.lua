@@ -379,6 +379,16 @@ _G.Volume = v
 end})
 Group2:AddDivider()
 Group2:AddToggle("",{
+	Text = "Anti Lookman",
+	Callback = function(value)
+if value and (workspace:FindFirstChild("BackdoorLookman")) then
+game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(-649)
+else
+game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0, -90, 0, false)
+end
+end})
+Group2:AddDivider()
+Group2:AddToggle("",{
 	Text = "Auto TimerLever",
 	Callback = function(v)
 _G.AutoTimer = v
