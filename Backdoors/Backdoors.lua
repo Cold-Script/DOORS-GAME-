@@ -268,6 +268,7 @@ Toggles.PromptClip:OnChanged(function(value)
 for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") then
 v.HoldDuration = 0
+v.Enabled = true
 end
 end
 end)
