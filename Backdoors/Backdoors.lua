@@ -404,22 +404,7 @@ end
 end)
 end
 end
-Group2:AddToggle("",{
-	Text = "Auto Unlock",
-	Callback = function(v)
-_G.AutoUnlock = v
-end})
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "Lock" then
-spawn(function()
-while task.wait() do
-if Distance(v:FindFirstChildWhichIsA("BasePart")) and _G.AutoLock then
-fireproximityprompt(v.UnlockPrompt)
-end
-end
-end)
-end
-end
+
 Group2:AddToggle("",{
 	Text = "Auto Key Room",
 	Callback = function(v)
@@ -436,22 +421,7 @@ end
 end)
 end
 end
-Group2:AddToggle("",{
-	Text = "Auto Drawers",
-	Callback = function(v)
-_G.AutoDraw = v
-end})
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "DrawerContainer" then
-spawn(function()
-while task.wait() do
-if Distance(v:FindFirstChildWhichIsA("BasePart")) and _G.AutoDraw then
-fireproximityprompt(v.Knob.ActivateEventPrompt)
-end
-end
-end)
-end
-end
+
 Group2:AddButton({Text="No Haste Jumpcare",DoubleClick=true,Func = function()
 if game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote:FindFirstChild("Haste") then
 	game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote.Haste:Destroy()
@@ -638,3 +608,26 @@ Group3:AddSlider("",{
     Callback = function(v)
 _G.TextSize = v
 end})
+local MenuGroup = Tab3:AddLeftGroupbox("Menu")
+local CreditsGroup = Tab3:AddRightGroupbox("Credits")
+
+MenuGroup:AddToggle("KeybindMenuOpen", { Default = false, Text = "Open Keybind Menu", Callback = function(value) Library.KeybindFrame.Visible = value end})
+MenuGroup:AddToggle("ShowCustomCursor", {Text = "Custom Cursor", Default = true, Callback = function(Value) Library.ShowCustomCursor = Value end})
+MenuGroup:AddDivider()
+MenuGroup:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu keybind" })
+
+Library.ToggleKeybind = Options.MenuKeybind
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+SaveManager:IgnoreThemeSettings()
+
+ThemeManager:SetFolder("mspaint")
+SaveManager:SetFolder("mspaint/doors")
+
+SaveManager:BuildConfigSection(Tab3)
+
+ThemeManager:ApplyToTab(Tab3)
+
+SaveManager:LoadAutoloadConfig()
