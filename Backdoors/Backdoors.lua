@@ -398,7 +398,7 @@ Group3:AddToggle("Toggle",{
     Text = "Door ESP",
     Default = false,
     Callback = function(value)
-if value then               
+if value then 
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
 Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
@@ -499,6 +499,32 @@ else
 ESP4:Disconnect()
 for _, v in pairs(workspace:GetDescendants()) do
 if v.Name == "VacuumESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle("Toggle",{
+    Text = "Closet ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Backdoor_Wardrobe" then
+Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
+end		
+end					
+ESP5 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(child:GetDescendants()) do
+if v.Name == "Backdoor_Wardrobe" then
+Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
+end
+end                        
+end)
+else
+ESP5:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "ClosetESP" then
 v:Destroy()
 end
 end
