@@ -459,13 +459,13 @@ Group3:AddToggle("Toggle",{
 if value then               
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "TimerLever" then
-Highlight(v, "TimerLever [" v.TakeTimer.TextLabel.Text "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
+Highlight(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
 end		
 end					
 ESP3 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(child:GetDescendants()) do
 if v.Name == "TimerLever" then
-Highlight(v, "TimerLever [" v.TakeTimer.TextLabel.Text "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
+Highlight(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
 end	
 end                        
 end)
@@ -496,17 +496,19 @@ end
 end                        
 end)
 else
-ESP3:Disconnect()
+ESP4:Disconnect()
 for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "TimerLeverESP" then
+if v.Name == "VacuumESP" then
 v:Destroy()
 end
 end
 end			
 end})
+Group3:AddDivider()
+_G.Highlight = true
 Group3:AddToggle("Toggle",{
     Text = "Highlight",
-    Default = false,
+    Default = true,
     Callback = function(value)
 _G.Highlight = value
 end})
