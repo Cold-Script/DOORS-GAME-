@@ -547,6 +547,7 @@ end
 end
 end			
 end})
+
 Group3:AddToggle("Toggle",{
     Text = "Closet ESP",
     Default = false,
@@ -573,6 +574,69 @@ end
 end
 end			
 end})
+Group3:AddToggle("Toggle",{
+    Text = "Books & Breakers ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "LiveHintBook" then
+Highlight(v, "Book", Color3.fromRGB(80,255,200), "BookESP")
+elseif v.Name == "LiveBreakerPolePickup" then
+Highlight(v, "Breaker", Color3.fromRGB(80,255,200), "BreakerESP")
+end		
+end					
+ESP5 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "LiveHintBook" then
+Highlight(v, "Book", Color3.fromRGB(80,255,200), "BookESP")
+elseif v.Name == "LiveBreakerPolePickup" then
+Highlight(v, "Breaker", Color3.fromRGB(80,255,200), "BreakerESP")
+end	
+end                        
+end)
+else
+ESP5:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "BookESP" then
+v:Destroy()
+elseif v.Name == "BreakerESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle("Toggle",{
+    Text = "Lever & Gate ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "LeverForGate" then
+Highlight(v, "Lever", Color3.fromRGB(0,0,200), "LeverESP")
+elseif v.Name == "Gate" then
+Highlight(v, "Gate", Color3.fromRGB(80,255,200), "GateESP")
+end		
+end					
+ESP6 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "LeverForGate" then
+Highlight(v, "Lever", Color3.fromRGB(0,0,200), "LeverESP")
+elseif v.Name == "Gate" then
+Highlight(v, "Gate", Color3.fromRGB(80,255,200), "GateESP")	
+end                        
+end)
+else
+ESP6:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "LeverESP" then
+v:Destroy()
+elseif v.Name == "GateESP" then
+v:Destroy()
+end
+end
+end			
+end})
 Group3:AddDivider()
 _G.Highlight = true
 Group3:AddToggle("Toggle",{
@@ -592,7 +656,6 @@ Group3:AddSlider("",{
 _G.TextSize = v
 end})
 local MenuGroup = Tab3:AddLeftGroupbox("Menu")
-local CreditsGroup = Tab3:AddRightGroupbox("Credits")
 
 MenuGroup:AddToggle("KeybindMenuOpen", { Default = false, Text = "Open Keybind Menu", Callback = function(value) Library.KeybindFrame.Visible = value end})
 MenuGroup:AddToggle("ShowCustomCursor", {Text = "Custom Cursor", Default = true, Callback = function(Value) Library.ShowCustomCursor = Value end})
