@@ -43,9 +43,7 @@ Adornment.ZIndex = 10
 Adornment.Adornee = child
 Adornment.Name = title
 Adornment.Parent = child
-while wait() do
 Adornment.Enabled = _G.Highlight
-end
 end
 local function Highlight(child, name, color, title)
 Billboard(child, name, color, title)
@@ -57,9 +55,7 @@ Highlight.OutlineTransparency = 0
 Highlight.Name = title
 Highlight.Adornee = child
 Highlight.Parent = child
-while wait() do
 Highlight.Enabled = _G.Highlight
-end
 end
 function Distance(part, extra)
 	if not extra then extra = 15 end
