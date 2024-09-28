@@ -404,7 +404,54 @@ end
 end)
 end
 end
-
+Group2:AddToggle("",{
+	Text = "Auto Unlock",
+	Callback = function(v)
+_G.AutoUnlock = v
+end})
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "Lock" then
+spawn(function()
+while task.wait() do
+if Distance(v:FindFirstChildWhichIsA("BasePart")) and _G.AutoLock then
+fireproximityprompt(v.UnlockPrompt)
+end
+end
+end)
+end
+end
+Group2:AddToggle("",{
+	Text = "Auto Key Room",
+	Callback = function(v)
+_G.AutoKey = v
+end})
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyObtain" then
+spawn(function()
+while task.wait() do
+if Distance(v:FindFirstChildWhichIsA("BasePart")) and _G.AutoKey then
+fireproximityprompt(v.ModulePrompt)
+end
+end
+end)
+end
+end
+Group2:AddToggle("",{
+	Text = "Auto Drawers",
+	Callback = function(v)
+_G.AutoDraw = v
+end})
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "DrawerContainer" then
+spawn(function()
+while task.wait() do
+if Distance(v:FindFirstChildWhichIsA("BasePart")) and _G.AutoDraw then
+fireproximityprompt(v.Knob.ActivateEventPrompt)
+end
+end
+end)
+end
+end
 Group2:AddButton({Text="No Haste Jumpcare",DoubleClick=true,Func = function()
 if game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote:FindFirstChild("Haste") then
 	game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote.Haste:Destroy()
@@ -422,7 +469,7 @@ Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
 end		
 end					
 ESP1 = workspace.ChildAdded:Connect(function(child)                       
-for _,v in pairs(child:GetDescendants()) do
+for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
 Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
 end
@@ -480,7 +527,7 @@ Highlight(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB
 end		
 end					
 ESP3 = workspace.ChildAdded:Connect(function(child)                       
-for _,v in pairs(child:GetDescendants()) do
+for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "TimerLever" then
 Highlight(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
 end	
@@ -501,13 +548,13 @@ Group3:AddToggle("Toggle",{
     Callback = function(value)
 if value then               
 for _,v in pairs(workspace:GetDescendants()) do
-if v.Name == "ClosetSpace" then
+if v.Name == "SideroomSpace" then
 Highlight(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
 end		
 end					
 ESP4 = workspace.ChildAdded:Connect(function(child)                       
-for _,v in pairs(child:GetDescendants()) do
-if v.Name == "ClosetSpace" then
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "SideroomSpace" then
 Highlight(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
 end	
 end                        
@@ -532,7 +579,7 @@ Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
 end		
 end					
 ESP5 = workspace.ChildAdded:Connect(function(child)                       
-for _,v in pairs(child:GetDescendants()) do
+for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Backdoor_Wardrobe" then
 Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
 end
@@ -547,32 +594,7 @@ end
 end
 end			
 end})
-Group3:AddToggle("Toggle",{
-    Text = "Vacuum ESP",
-    Default = false,
-    Callback = function(value)
-if value then               
-for _,Player in pairs(game:GetService("Players"):GetPlayers()) do
-if Player ~= game:GetService("Players").LocalPlayer then
-Highlight(v, Player.Name, Color3.new(1,1,1), "PlayersESP")
-end
-end                        			
-ESP6 = workspace.ChildAdded:Connect(function(child)                       
-for _,Player in pairs(game:GetService("Players"):GetPlayers()) do
-if Player ~= game:GetService("Players").LocalPlayer then
-Highlight(v, Player.Name, Color3.new(1,1,1), "PlayersESP")
-end
-end                        
-end)
-else
-ESP6:Disconnect()
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "PlayerESP" then
-v:Destroy()
-end
-end
-end			
-end})
+
 Group3:AddDivider()
 _G.Highlight = true
 Group3:AddToggle("Toggle",{
