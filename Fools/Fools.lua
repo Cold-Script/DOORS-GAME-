@@ -204,12 +204,8 @@ v.CanCollide = true
 end 
 end})
 Group:AddToggle("Godmode",{
-	Text = "Godmode"
-})
-Toggles.Godmode:OnChanged(function(value)
-if game.Players.LocalPlayer.Character.Humanoid.Health = 0 then
-Toggles.Godmode:SetValue(false);
-end
+	Text = "Godmode",
+     Callback = function(value)
 if value then
 local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
 Collison.Position = Collison.Position - Vector3.new(0,7.5,0)
@@ -217,7 +213,7 @@ else
 local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
 Collison.Position = Collison.Position - Vector3.new(0,-7.5,0)
 end
-end)
+end})
 Group:AddDivider()
 
 Group:AddToggle("SlowJump",{
@@ -401,6 +397,23 @@ _G.Volume = v
 end})
 Group2:AddDivider()
 Group2:AddToggle("",{
+	Text = "Auto Key Room",
+	Callback = function(v)
+_G.AutoKey = v
+end})
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyObtain" then
+spawn(function()
+while task.wait() do
+if Distance(v:FindFirstChildWhichIsA("BasePart")) and _G.AutoKey then
+fireproximityprompt(v.ModulePrompt)
+end
+end
+end)
+end
+end
+Group2:AddDivider()
+Group2:AddToggle("",{
 	Text = "Anti Eyes",
 	Callback = function(value)
 if value and (workspace:FindFirstChild("Eyes")) then
@@ -425,5 +438,179 @@ Group2:AddToggle("MyToggle",{
     Callback=function(v187)
 local v188=0;while true do if (v188==(0 + 0)) then _G.antibanananana=v187;if (_G.antibanananana==true) then for v600,v601 in pairs(game:GetService("Workspace"):GetDescendants()) do if v601:IsA("Part") then if (v601.Name=="BananaPeel") then v601.CanTouch=false;end end end end break;end end end});
 game:GetService("RunService").RenderStepped:Connect(function()pcall(function()if _G.antije then for v413,v414 in pairs(game.workspace:GetChildren()) do if (v414.Name=="JeffTheKiller") then v414.Knife.CanTouch=false;end end for v415,v416 in pairs(game.workspace:GetChildren()) do if (v416.Name=="JeffTheKiller") then v416.Head.CanTouch=false;end end for v417,v418 in pairs(game.workspace:GetChildren()) do if (v418.Name=="JeffTheKiller") then v418.HumanoidRootPart.CanTouch=false;end end for v419,v420 in pairs(game.workspace:GetChildren()) do if (v420.Name=="JeffTheKiller") then v420["Left Arm"].CanTouch=false;end end for v421,v422 in pairs(game.workspace:GetChildren()) do if (v422.Name=="JeffTheKiller") then v422["Left Leg"].CanTouch=false;end end for v423,v424 in pairs(game.workspace:GetChildren()) do if (v424.Name=="JeffTheKiller") then v424["Right Arm"].CanTouch=false;end end for v425,v426 in pairs(game.workspace:GetChildren()) do if (v426.Name=="JeffTheKiller") then v426["Right Leg"].CanTouch=false;end end for v427,v428 in pairs(game.workspace:GetChildren()) do if (v428.Name=="JeffTheKiller") then v428.Torso.CanTouch=false;end end end end);end);
-Group2:AddToggle("MyToggle",{Text="Anti Jeff The Killer",Default=false,Callback=function(v189)local v171=Instance.new("Sound");v171.Parent=game.SoundService;v171.SoundId="rbxassetid://4590657391";v171.Volume=11 -6 ;v171.PlayOnRemove=true;v171:Destroy();_G.antije=v189;end});
-Group2:AddToggle("MyToggle",{Text="Spam Banana Jeff",Default=false,Callback=function(v219)local v171=Instance.new("Sound");v171.Parent=game.SoundService;v171.SoundId="rbxassetid://4590657391";v171.Volume=11 -6 ;v171.PlayOnRemove=true;v171:Destroy();_G.SpamBringjeffshe=v219;while _G.SpamBringjeffshe do wait(0.1);pcall(function()if workspace:FindFirstChild("JeffTheKiller") then for v502,v503 in pairs(workspace:GetChildren()) do if (v503.Name=="BananaPeel") then v503.CFrame=game.Workspace.JeffTheKiller.HumanoidRootPart.CFrame;end end end end);end end});
+Group2:AddToggle("MyToggle",{Text="Anti Jeff The Killer",Default=false,Callback=function(v189)_G.antije=v189;end});
+Group2:AddToggle("MyToggle",{Text="Spam Banana Jeff",Default=false,Callback=function(v219)_G.SpamBringjeffshe=v219;while _G.SpamBringjeffshe do wait(0.1);pcall(function()if workspace:FindFirstChild("JeffTheKiller") then for v502,v503 in pairs(workspace:GetChildren()) do if (v503.Name=="BananaPeel") then v503.CFrame=game.Workspace.JeffTheKiller.HumanoidRootPart.CFrame;end end end end);end end});
+local Group3 = Tab2:AddLeftGroupbox("ESP")
+Group3:AddToggle("Toggle",{
+    Text = "Door ESP",
+    Default = false,
+    Callback = function(value)
+if value then 
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Door" and v.Parent.Name == "Door" then
+Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+end		
+end					
+ESP1 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Door" and v.Parent.Name == "Door" then
+Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+end
+end                        
+end)
+else
+ESP1:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "DoorESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle('',{
+    Text = "Entity ESP", 
+    Default = false,
+    Callback = function(value)
+if value then
+for _,v in pairs(workspace.CurrentRooms:GetDescendants()) do
+if v.Name == "RushNew" and v.Parent.Name == "RushMoving" then
+CylinderESP(v, "Rush", v.Color, "RushESP")
+elseif v.Name == "RushNew" and v.Parent.Name == "AmbushMoving" then
+CylinderESP(v, "Ambush", v.Color, "AmbushESP")
+elseif v.Name == "RushMoving" then
+Highlight(v, "Rush", Color3.fromRGB(80,80,80), "RushESP")
+elseif v.Name == "Core" and v.Parent.Name == "Eyes" then
+CylinderESP(v, "Eyes", v.Color, "EyesESP")
+elseif v.Name == "HumanoidRootPart" and v.Parent.Name == "JeffTheKiller" then
+Highlight(v, "Jeff", v.Color, "JeffESP")
+elseif v.Name == "FigureRagdoll" then
+Highlight(v, "Figure", Color3.new(1), "FigureESP")
+end
+end
+ESP2 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(child:GetDescendants()) do
+if v.Name == "RushNew" and v.Parent.Name == "RushMoving" then
+CylinderESP(v, "Rush", v.Color, "RushESP")
+elseif v.Name == "RushNew" and v.Parent.Name == "AmbushMoving" then
+CylinderESP(v, "Ambush", v.Color, "AmbushESP")
+elseif v.Name == "RushMoving" then
+Highlight(v, "Rush", Color3.fromRGB(80,80,80), "RushESP")
+elseif v.Name == "Core" and v.Parent.Name == "Eyes" then
+CylinderESP(v, "Eyes", v.Color, "EyesESP")
+elseif v.Name == "HumanoidRootPart" and v.Parent.Name == "JeffTheKiller" then
+Highlight(v, "Jeff", v.Color, "JeffESP")
+elseif v.Name == "FigureRagdoll" then
+Highlight(v, "Figure", Color3.new(1), "FigureESP")
+end
+end                        
+end)
+else
+ESP2:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "RushESP" then
+v:Destroy()
+elseif v.Name == "AmbushESP" then
+v:Destroy()
+elseif v.Name == "EyesESP" then
+v:Destroy()
+elseif v.Name == "JeffESP" then
+v:Destroy()
+elseif v.Name == "FigureESP" then
+v:Destroy()						
+end
+end
+end			
+end})
+Group3:AddToggle("Toggle",{
+    Text = "Key ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyObtain" then
+Highlight(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
+end		
+end					
+ESP3 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyObtain" then
+Highlight(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
+end
+end                        
+end)
+else
+ESP3:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle("Toggle",{
+    Text = "Closet ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Wardrobe" then
+Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
+end		
+end					
+ESP4 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Wardrobe" then
+Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
+end
+end                        
+end)
+else
+ESP4:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "ClosetESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddDivider()
+_G.Highlight = true
+Group3:AddToggle("Toggle",{
+    Text = "Highlight",
+    Default = true,
+    Callback = function(value)
+_G.Highlight = value
+end})
+_G.TextSize = 15
+Group3:AddSlider("",{
+    Text="Text Size",
+    Default=15,
+    Min=10,Max=25,
+    Rounding=1,
+    Compact=true,
+    Callback = function(v)
+_G.TextSize = v
+end})
+local MenuGroup = Tab3:AddLeftGroupbox("Menu")
+local CreditsGroup = Tab3:AddRightGroupbox("Credits")
+
+MenuGroup:AddToggle("KeybindMenuOpen", { Default = false, Text = "Open Keybind Menu", Callback = function(value) Library.KeybindFrame.Visible = value end})
+MenuGroup:AddToggle("ShowCustomCursor", {Text = "Custom Cursor", Default = true, Callback = function(Value) Library.ShowCustomCursor = Value end})
+MenuGroup:AddDivider()
+MenuGroup:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu keybind" })
+
+Library.ToggleKeybind = Options.MenuKeybind
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+SaveManager:IgnoreThemeSettings()
+
+ThemeManager:SetFolder("mspaint")
+SaveManager:SetFolder("mspaint/doors")
+
+SaveManager:BuildConfigSection(Tab3)
+
+ThemeManager:ApplyToTab(Tab3)
+
+SaveManager:LoadAutoloadConfig()
