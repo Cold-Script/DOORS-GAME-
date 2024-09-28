@@ -33,8 +33,8 @@ end
 local function CylinderESP(child, name, color, title)
 Billboard(child, name, color, title)
 local Adornment = Instance.new("CylinderHandleAdornment")
-Adornment.Height = child.Size.Y * 2
-Adornment.Radius = child.Size.X * 2
+Adornment.Height = child.Size.Y * 3
+Adornment.Radius = child.Size.X * 1.25
 Adornment.CFrame = CFrame.new(0,0,0) * CFrame.Angles(math.rad(90), 0, 0)
 Adornment.Color3 = color
 Adornment.Transparency = 0.6
@@ -490,16 +490,16 @@ Group3:AddToggle('',{
     Callback = function(value)
 if value then
 for _,v in pairs(workspace.CurrentRooms:GetDescendants()) do
-if v.Name == "RushNew" and v.Parent.Name == "BackdoorRush" then
-CylinderESP(v, "Blitz", v.Color, "BlitzESP")
+if v.Name == "BackdoorRush" then
+CylinderESP(v, "Blitz", Color3.new(1), "BlitzESP")
 elseif v.Name == "Core" and v.Parent.Name == "BackdoorLookman" then
 CylinderESP(v, "Lookman", v.Color, "LookmanESP")
 end
 end
 ESP2 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(child:GetDescendants()) do
-if v.Name == "RushNew" and v.Parent.Name == "BackdoorRush" then
-CylinderESP(v, "Blitz", v.Color, "BlitzESP")
+if v.Name == "BackdoorRush" then
+CylinderESP(v, "Blitz", Color3.new(1), "BlitzESP")
 elseif v.Name == "Core" and v.Parent.Name == "BackdoorLookman" then
 CylinderESP(v, "Lookman", v.Color, "LookmanESP")
 end
@@ -594,7 +594,32 @@ end
 end
 end			
 end})
-
+Group3:AddToggle("Toggle",{
+    Text = "Key ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyObtain" then
+Highlight(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
+end		
+end					
+ESP6 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyObtain" then
+Highlight(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
+end
+end                        
+end)
+else
+ESP6:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyESP" then
+v:Destroy()
+end
+end
+end			
+end})
 Group3:AddDivider()
 _G.Highlight = true
 Group3:AddToggle("Toggle",{
