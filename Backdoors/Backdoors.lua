@@ -1,3 +1,66 @@
+local function Billboard(child, name, color, title)
+local Billboard = Instance.new("BillboardGui");do
+Billboard.Active = true;
+Billboard.AlwaysOnTop = true;
+Billboard.ClipsDescendants = true;
+Billboard.LightInfluence = 1;
+Billboard.Size = UDim2.new(10000, 0, 10000, 0);
+Billboard.ResetOnSpawn = false;
+Billboard.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
+Billboard.Parent = child;
+Billboard.Name = title;
+local Title = Instance.new("TextLabel");
+Title.TextSize = _G.TextSize;
+Title.Font = "Oswald";
+Title.TextColor3 = color;
+Title.BackgroundColor3 = Color3.new(1, 1, 1);
+Title.BackgroundTransparency = 1;
+Title.BorderColor3 = Color3.new(0, 0, 0);
+Title.BorderSizePixel = 0;
+Title.Size = UDim2.new(1, 0, 1, 0);
+Title.Visible = true;
+Title.Parent = Billboard;
+local uistroke = Instance.new("UIStroke");
+uistroke.Thickness = 1;
+uistroke.Parent = Title;
+task.spawn(function()
+game:GetService("RunService").RenderStepped:Connect(function()
+Title.Text = string.format("%s\n[%sm]", name or child.Name, math.floor((workspace.CurrentCamera.CFrame.Position - child:GetPivot().Position).Magnitude));
+end);
+end);
+end
+end
+local function CylinderESP(child, name, color, title)
+Billboard(child, name, color, title)
+local Adornment = Instance.new("CylinderHandleAdornment")
+Adornment.Height = child.Size.Y * 2
+Adornment.Radius = child.Size.X * 2
+Adornment.CFrame = CFrame.new(0,0,0) * CFrame.Angles(math.rad(90), 0, 0)
+Adornment.Color3 = color
+Adornment.Transparency = 0.6
+Adornment.AlwaysOnTop = true
+Adornment.ZIndex = 10
+Adornment.Adornee = child
+Adornment.Name = title
+Adornment.Parent = child
+while wait() do
+Adornment.Enabled = _G.Highlight
+end
+end
+local function Highlight(child, name, color, title)
+Billboard(child, name, color, title)
+local Highlight = Instance.new("Highlight")
+Highlight.FillColor = color
+Highlight.OutlineColor = color
+Highlight.FillTransparency = 0.75
+Highlight.OutlineTransparency = 0
+Highlight.Name = title
+Highlight.Adornee = child
+Highlight.Parent = child
+while wait() do
+Highlight.Enabled = _G.Highlight
+end
+end
 function Distance(part, extra)
 	if not extra then extra = 15 end
 	if not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not part then
@@ -28,8 +91,8 @@ local Window = Library:CreateWindow({
 	MenuFadeTime = 0
 })
 local Tab = Window:AddTab("Main")
-local Tab3 = Window:AddTab("ESP")
-local Tab4 = Window:AddTab("Configs")
+local Tab2 = Window:AddTab("ESP")
+local Tab3 = Window:AddTab("Configs")
 
 function notify(name)
 Library:Notify(name)
@@ -329,4 +392,131 @@ Group2:AddButton({Text="No Haste Jumpcare",DoubleClick=true,Func = function()
 if game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote:FindFirstChild("Haste") then
 	game:GetService("ReplicatedStorage").FloorClientStuff.ClientRemote.Haste:Destroy()
 end
+end})
+local Group3 = Tab2:AddLeftGroupbox("ESP")
+Group3:AddToggle("Toggle",{
+    Text = "Door ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Door" and v.Parent.Name == "Door" then
+Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+end		
+end					
+ESP1 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(child:GetDescendants()) do
+if v.Name == "Door" and v.Parent.Name == "Door" then
+Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+end
+end                        
+end)
+else
+ESP1:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "DoorESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle('',{
+    Text = "Entity ESP", 
+    Default = false,
+    Callback = function(value)
+if value then
+for _,v in pairs(workspace.CurrentRooms:GetDescendants()) do
+if v.Name == "RushNew" and v.Parent.Name == "BackdoorRush" then
+CylinderESP(v, "Blitz", v.Color, "BlitzESP")
+elseif v.Name == "Core" and v.Parent.Name == "BackdoorLookman" then
+CylinderESP(v, "Lookman", v.Color, "LookmanESP")
+end
+end
+ESP2 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(child:GetDescendants()) do
+if v.Name == "RushNew" and v.Parent.Name == "BackdoorRush" then
+CylinderESP(v, "Blitz", v.Color, "BlitzESP")
+elseif v.Name == "Core" and v.Parent.Name == "BackdoorLookman" then
+CylinderESP(v, "Lookman", v.Color, "LookmanESP")
+end
+end                        
+end)
+else
+ESP2:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "BlitzESP" then
+v:Destroy()
+elseif v.Name == "LookmanESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle("Toggle",{
+    Text = "TimerLever ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "TimerLever" then
+Highlight(v, "TimerLever [" v.TakeTimer.TextLabel.Text "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
+end		
+end					
+ESP3 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(child:GetDescendants()) do
+if v.Name == "TimerLever" then
+Highlight(v, "TimerLever [" v.TakeTimer.TextLabel.Text "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
+end	
+end                        
+end)
+else
+ESP3:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "TimerLeverESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle("Toggle",{
+    Text = "Vacuum ESP",
+    Default = false,
+    Callback = function(value)
+if value then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "ClosetSpace" then
+Highlight(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
+end		
+end					
+ESP4 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(child:GetDescendants()) do
+if v.Name == "ClosetSpace" then
+Highlight(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
+end	
+end                        
+end)
+else
+ESP3:Disconnect()
+for _, v in pairs(workspace:GetDescendants()) do
+if v.Name == "TimerLeverESP" then
+v:Destroy()
+end
+end
+end			
+end})
+Group3:AddToggle("Toggle",{
+    Text = "Highlight",
+    Default = false,
+    Callback = function(value)
+_G.Highlight = value
+end})
+_G.TextSize = 15
+Group3:AddSlider("",{
+    Text="Text Size",
+    Default=15,
+    Min=10,Max=25,
+    Rounding=1,
+    Compact=true,
+    Callback = function(v)
+_G.TextSize = v
 end})
