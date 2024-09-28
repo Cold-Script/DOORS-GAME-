@@ -260,6 +260,17 @@ v.MaxActivationDistance = _G.RangePrompt
 end
 end
 end)
+Group2:AddToggle("InstanceInteract",{
+    Text = "Instance Prompt",
+    Default = false
+})
+Toggles.PromptClip:OnChanged(function(value)
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+end)
 Group2:AddSlider("",{
     Text="Prompt Range",
     Default=1,
