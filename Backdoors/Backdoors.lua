@@ -1,62 +1,43 @@
 local function Billboard(child, name, color, title)
-local Billboard = Instance.new("BillboardGui");do
-Billboard.Active = true;
-Billboard.AlwaysOnTop = true;
-Billboard.ClipsDescendants = true;
-Billboard.LightInfluence = 1;
-Billboard.Size = UDim2.new(10000, 0, 10000, 0);
-Billboard.ResetOnSpawn = false;
-Billboard.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
-Billboard.Parent = child;
-Billboard.Name = title;
-local Title = Instance.new("TextLabel");
-Title.TextSize = _G.TextSize;
-Title.Font = "Oswald";
-Title.TextColor3 = color;
-Title.BackgroundColor3 = Color3.new(1, 1, 1);
-Title.BackgroundTransparency = 1;
-Title.BorderColor3 = Color3.new(0, 0, 0);
-Title.BorderSizePixel = 0;
-Title.Size = UDim2.new(1, 0, 1, 0);
-Title.Visible = true;
-Title.Parent = Billboard;
-local uistroke = Instance.new("UIStroke");
-uistroke.Thickness = 1;
-uistroke.Parent = Title;
+bill = Instance.new("BillboardGui",child)
+        bill.AlwaysOnTop = true
+        bill.Size = UDim2.new(0,400,0,100)
+        bill.Adornee = child
+        bill.MaxDistance = 2000
+        bill.Name = title
+
+        local mid = Instance.new("Frame",bill)
+        mid.AnchorPoint = Vector2.new(0.5,0.5)
+        mid.BackgroundColor3 = color
+        mid.Size = UDim2.new(0,12.5,0,12.5)
+        mid.Position = UDim2.new(0.5,0,0.5,0)
+        Instance.new("UICorner",mid).CornerRadius = UDim.new(100,0)
+        Instance.new("UIStroke",mid)
+
+        local txt = Instance.new("TextLabel",bill)
+        txt.AnchorPoint = Vector2.new(0.5,0.5)
+        txt.BackgroundTransparency = 1
+        txt.BackgroundColor3 = color
+        txt.TextColor3 = color
+        txt.Font = "GothamBold"
+        txt.TextSize = "15"
+        txt.Size = UDim2.new(1,0,0,-50)
+        txt.Position = UDim2.new(0.5,0,0.7,0)
+        Instance.new("UIStroke",txt)
 task.spawn(function()
 game:GetService("RunService").RenderStepped:Connect(function()
-Title.Text = string.format("%s\n[%sm]", name or child.Name, math.floor((workspace.CurrentCamera.CFrame.Position - child:GetPivot().Position).Magnitude));
+txt.Text = string.format("%s\n[%s studs]", name or child.Name, math.floor((game.Players.LocalPlayer.Character.Head.Position - child:GetPivot().Position).Magnitude));
 end);
 end);
 end
+local function ClearESP(name)
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == name then
+v:Destroy()
 end
-local function CylinderESP(child, name, color, title)
-Billboard(child, name, color, title)
-local Adornment = Instance.new("CylinderHandleAdornment")
-Adornment.Height = child.Size.Y * 3
-Adornment.Radius = child.Size.X * 1.25
-Adornment.CFrame = CFrame.new(0,0,0) * CFrame.Angles(math.rad(90), 0, 0)
-Adornment.Color3 = color
-Adornment.Transparency = 0.6
-Adornment.AlwaysOnTop = true
-Adornment.ZIndex = 10
-Adornment.Adornee = child
-Adornment.Name = title
-Adornment.Parent = child
-Adornment.Enabled = _G.Highlight
 end
-local function Highlight(child, name, color, title)
-Billboard(child, name, color, title)
-local Highlight = Instance.new("Highlight")
-Highlight.FillColor = color
-Highlight.OutlineColor = color
-Highlight.FillTransparency = 0.75
-Highlight.OutlineTransparency = 0
-Highlight.Name = title
-Highlight.Adornee = child
-Highlight.Parent = child
-Highlight.Enabled = _G.Highlight
 end
+
 function Distance(part, extra)
 	if not extra then extra = 15 end
 	if not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not part then
@@ -260,18 +241,7 @@ v.MaxActivationDistance = _G.RangePrompt
 end
 end
 end)
-Group2:AddToggle("InstanceInteract",{
-    Text = "Instance Prompt",
-    Default = false
-})
-Toggles.PromptClip:OnChanged(function(value)
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.HoldDuration = 0
-v.Enabled = true
-end
-end
-end)
+
 Group2:AddSlider("",{
     Text="Prompt Range",
     Default=1,
@@ -294,6 +264,7 @@ Group2:AddToggle("AntiLag",{
     Default = false
 })
 Toggles.AntiLag:OnChanged(function(value)
+game:GetService("RunService").RenderStepped:Connect(function()
 for _, object in pairs(workspace:GetDescendants()) do
         if object:IsA("BasePart") then
             if not object:GetAttribute("Material") then object:SetAttribute("Material", object.Material) end
@@ -311,6 +282,7 @@ for _, object in pairs(workspace:GetDescendants()) do
     workspace.Terrain.WaterWaveSize = value and 0 or 0.05
     workspace.Terrain.WaterWaveSpeed = value and 0 or 8
 end)
+end)		
 Group2:AddToggle("Toggle",{
     Text = "Fullbright",
     Default = false,
@@ -331,6 +303,7 @@ Group2:AddToggle("NoFog",{
     Default = false
 })
 Toggles.NoFog:OnChanged(function(value)
+game:GetService("RunService").RenderStepped:Connect(function()
 if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
     if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
 
@@ -344,6 +317,7 @@ if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("F
         fog.Density = value and 0 or fog:GetAttribute("Density")
 	end
 end)
+end)		
 Group2:AddDivider()
 Group2:AddToggle("NotifyEntity",{
     Text = "Notifier Entity",
@@ -436,23 +410,19 @@ Group3:AddToggle("Toggle",{
 if value then 
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
-Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
 end		
 end					
 ESP1 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
-Highlight(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
 end
 end                        
 end)
 else
 ESP1:Disconnect()
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "DoorESP" then
-v:Destroy()
-end
-end
+ClearESP("DoorESP")
 end			
 end})
 Group3:AddToggle('',{
@@ -462,27 +432,24 @@ Group3:AddToggle('',{
 if value then
 for _,v in pairs(workspace.CurrentRooms:GetDescendants()) do
 if v.Name == "BackdoorRush" then
-CylinderESP(v, "Blitz", Color3.new(1), "BlitzESP")
+Billboard(v, "Blitz", Color3.new(1), "BlitzESP")
 elseif v.Name == "Core" and v.Parent.Name == "BackdoorLookman" then
-CylinderESP(v, "Lookman", v.Color, "LookmanESP")
+Billboard(v, "Lookman", v.Color, "LookmanESP")
 end
 end
 ESP2 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(child:GetDescendants()) do
 if v.Name == "BackdoorRush" then
-CylinderESP(v, "Blitz", Color3.new(1), "BlitzESP")
-elseif v.Name == "Core" and v.Parent.Name == "BackdoorLookman" then
-CylinderESP(v, "Lookman", v.Color, "LookmanESP")
+Billboard(v, "Blitz", Color3.new(1), "BlitzESP")
+elseif v.Name == "BackdoorLookman" then
+Billboard(v, "Lookman", v.Color, "LookmanESP")
 end
 end                        
 end)
 else
 ESP2:Disconnect()
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "BlitzESP" then
-v:Destroy()
-elseif v.Name == "LookmanESP" then
-v:Destroy()
+ClearESP("Blitz")
+ClearESP("LookmanESP")
 end
 end
 end			
@@ -494,23 +461,19 @@ Group3:AddToggle("Toggle",{
 if value then               
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "TimerLever" then
-Highlight(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
+Billboard(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
 end		
 end					
 ESP3 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "TimerLever" then
-Highlight(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
+Billboard(v, "TimerLever [" .. v.TakeTimer.TextLabel.Text .. "]", Color3.fromRGB(80,80,80), "TimerLeverESP")
 end	
 end                        
 end)
 else
 ESP3:Disconnect()
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "TimerLeverESP" then
-v:Destroy()
-end
-end
+ClearESP("TimerLeverESP")
 end			
 end})
 Group3:AddToggle("Toggle",{
@@ -520,23 +483,19 @@ Group3:AddToggle("Toggle",{
 if value then               
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "SideroomSpace" then
-Highlight(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
+Billboard(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
 end		
 end					
 ESP4 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "SideroomSpace" then
-Highlight(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
+Billboard(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
 end	
 end                        
 end)
 else
 ESP4:Disconnect()
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "VacuumESP" then
-v:Destroy()
-end
-end
+ClearESP("VacuumESP")
 end			
 end})
 Group3:AddToggle("Toggle",{
@@ -546,23 +505,19 @@ Group3:AddToggle("Toggle",{
 if value then               
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Backdoor_Wardrobe" then
-Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
+Billboard(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
 end		
 end					
 ESP5 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Backdoor_Wardrobe" then
-Highlight(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
+Billboard(v, "Closet", Color3.fromRGB(80,255,200), "ClosetESP")
 end
 end                        
 end)
 else
 ESP5:Disconnect()
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "ClosetESP" then
-v:Destroy()
-end
-end
+ClearESP("ClosetESP")
 end			
 end})
 Group3:AddToggle("Toggle",{
@@ -572,23 +527,19 @@ Group3:AddToggle("Toggle",{
 if value then               
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "KeyObtain" then
-Highlight(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
+Billboard(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
 end		
 end					
 ESP6 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "KeyObtain" then
-Highlight(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
+Billboard(v, "Key", Color3.fromRGB(80,255,200), "KeyESP")
 end
 end                        
 end)
 else
 ESP6:Disconnect()
-for _, v in pairs(workspace:GetDescendants()) do
-if v.Name == "KeyESP" then
-v:Destroy()
-end
-end
+ClearESP("KeyESP")
 end			
 end})
 Group3:AddDivider()
