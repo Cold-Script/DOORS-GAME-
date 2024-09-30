@@ -86,7 +86,7 @@ end)
 Tab:Toggle("Fullbright",false,function(v)
 if v then
 game.Lighting.Brightness = 1.5
-game.Lighting.GlobalShadows = false
+game.Lighting.GlobalShadows = true
 game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
 else
 game.Lighting.Brightness = 1
@@ -122,19 +122,19 @@ Tab:Toggle("Notifier Entity",false,function(v)
 if v then
 EntityNotifier = workspace.ChildAdded:Connect(function(child)
 if child.Name == "BackdoorLookman" then
-notify("[ Notifier Entity ] : Lookman has spawn please dont look it")
+notify("Lookman has spawn please dont look it")
 elseif child.Name == "BackdoorRush" and Distance(child:FindFirstChildWhichIsA("BasePart"), 1000) then
-notify("[ Notifier Entity ] :  Blitz has spawn find the closet hide now!")
+notify("Blitz has spawn find the closet hide now!")
 elseif child.Name == "Eyes" then
-notify("[ Notifier Entity ] : Eyes has spawn please dont look it")
+notify("Eyes has spawn please dont look it")
 elseif child.Name == "RushMoving" and Distance(child:FindFirstChildWhichIsA("BasePart"), 1000) then
-notify("[ Notifier Entity ] :  Rush has spawn find the closet hide now!")
+notify("Rush has spawn find the closet hide now!")
 elseif child.Name == "AmbushMoving" and Distance(child:FindFirstChildWhichIsA("BasePart"), 1000) then
-notify("[ Notifier Entity ] :  Ambush has spawn find the closet hide now!")
+notify("Ambush has spawn find the closet hide now!")
 elseif child.Name == "JeffTheKiller" then
-notify("[ Notifier Entity ] :  Jeff The Killer has spawn careful it!")
+notify("Jeff The Killer has spawn careful it!")
 elseif child.Name == "FigureRagdoll" and Distance(child:FindFirstChildWhichIsA("BasePart"), 75) then
-notify("[ Notifier Entity ] :  Figure near, careful!")           
+notify("Figure near, careful!")           
 end
 end)
 else
