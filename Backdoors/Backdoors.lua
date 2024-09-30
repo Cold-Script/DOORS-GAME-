@@ -450,8 +450,6 @@ else
 ESP2:Disconnect()
 ClearESP("Blitz")
 ClearESP("LookmanESP")
-end
-end
 end			
 end})
 Group3:AddToggle("Toggle",{
