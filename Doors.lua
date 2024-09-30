@@ -10,7 +10,7 @@ end
 return false
 end
 local Library = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
-local Window = Library:Window("YPoint",Color3.fromRGB(255,255,255), Enum.KeyCode.RightControl)
+local Window = Library:Window("YPoint",Color3.new(7,9.9), Enum.KeyCode.RightControl)
 local Tab = Window:Tab("Main")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
 if _G.ClosetExitFixed and game.Players.LocalPlayer.Character:GetAttribute("Hiding") == true then 
@@ -108,7 +108,7 @@ end
 end)
 end)
 function notify(name)
-Library:Notify(name)
+Library:Notification("YPoint Warning", name, "OK")
 if _G.PlaySound then
 local sound = Instance.new("Sound", workspace) do
 sound.SoundId = "rbxassetid://4590662766"
