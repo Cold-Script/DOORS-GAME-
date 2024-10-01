@@ -214,9 +214,14 @@ Tab2:Toggle("Anti-Banana",false,function(v)local v2=0;while true do if v2 == 0 t
 
 game:GetService("RunService").RenderStepped:Connect(function()pcall(function()
 if _G.antije then for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Knife.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Head.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.HumanoidRootPart.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Left Arm"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Left Leg"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Right Arm"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Right Leg"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Torso.CanTouch=false;end end end end);end);
-Tab2:Toggle("Anti-Jeff",false,function(v)_G.antije=v;end});
-
-
+Tab2:Toggle("Anti-Jeff",false,function(v)_G.antije=v;end);
+Tab2:Toggle("Anti-Figure Hearing",false,function(v)
+if v then
+game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(true)
+else
+game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(false)
+end
+end)    
 
 tab:Button("Button", function()
 lib:Notification("Notification", "Hello!", "Hi!")
