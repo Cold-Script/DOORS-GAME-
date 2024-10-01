@@ -1,3 +1,42 @@
+local function Billboard(child, name, color, title)
+bill = Instance.new("BillboardGui",child)
+        bill.AlwaysOnTop = true
+        bill.Size = UDim2.new(0,400,0,100)
+        bill.Adornee = child
+        bill.MaxDistance = 2000
+        bill.Name = title
+
+        local mid = Instance.new("Frame",bill)
+        mid.AnchorPoint = Vector2.new(0.5,0.5)
+        mid.BackgroundColor3 = color
+        mid.Size = UDim2.new(0,12.5,0,12.5)
+        mid.Position = UDim2.new(0.5,0,0.5,0)
+        Instance.new("UICorner",mid).CornerRadius = UDim.new(100,0)
+        Instance.new("UIStroke",mid)
+
+        local txt = Instance.new("TextLabel",bill)
+        txt.AnchorPoint = Vector2.new(0.5,0.5)
+        txt.BackgroundTransparency = 1
+        txt.BackgroundColor3 = color
+        txt.TextColor3 = color
+        txt.Font = "GothamBold"
+        txt.TextSize = "15"
+        txt.Size = UDim2.new(1,0,0,-50)
+        txt.Position = UDim2.new(0.5,0,0.7,0)
+        Instance.new("UIStroke",txt)
+task.spawn(function()
+game:GetService("RunService").RenderStepped:Connect(function()
+txt.Text = string.format("%s\n[%s studs]", name or child.Name, math.floor((game.Players.LocalPlayer.Character.Head.Position - child:GetPivot().Position).Magnitude));
+end);
+end);
+end
+local function ClearESP(name)
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == name then
+v:Destroy()
+end
+end
+end
 function Distance(part, extra)
 if not extra then extra = 15 end
 if not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not part then
@@ -75,20 +114,20 @@ Tab:Toggle("Reach Prompt Clip",false,function(v)
 pcall(function()
 for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") then
-v.RequiresLineOfSight = not v
+v.RequiresLineOfSight = not v or true
 v.MaxActivationDistance = _G.RangePrompt
 end
 end
 end)
 end)
-_G.ReachPrompt = 5
+_G.ReachPrompt = 10
 Tab:Slider("Reach Range",1,30,5,function(v)
 _G.RangePrompt = v
 end)
 Tab:Toggle("Fullbright",false,function(v)
 if v then
 game.Lighting.Brightness = 1.5
-game.Lighting.GlobalShadows = true
+game.Lighting.GlobalShadows = false
 game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
 else
 game.Lighting.Brightness = 1
@@ -229,6 +268,28 @@ else
 game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(false)
 end
 end)    
+local Tab3 = Window:Tab("ESP")
+Tab2:Toggle("ESP Doors",false,function(v)
+if v then 
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Door" and v.Parent.Name == "Door" then
+Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+end		
+end					
+ESP1 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "Door" and v.Parent.Name == "Door" then
+Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+end
+end                        
+end)
+else
+ESP1:Disconnect()
+ClearESP("DoorESP")
+end		
+end)
+
+
 
 
 
