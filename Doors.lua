@@ -189,16 +189,17 @@ end)
 Tab2:Toggle("Anti-Fire",false,function(v)
 _G.SeekFire = v
 end)
-local v2 = game.ReplicatedStorage:WaitForChild("EntityInfo"):WaitForChild("A90");
+
 Tab2:Toggle("Anti-A90",false,function(v)
 flags.noa90 = v
 if v then 
+local v2 = game.ReplicatedStorage:WaitForChild("EntityInfo"):WaitForChild("A90")
 local v3 = 0 local v4 while true do if v3 == 0 then v4 = game.Players.LocalPlayer.PlayerGui:WaitForChild("MainUI"):WaitForChild("Jumpscare"):FindFirstChild("Jumpscare_A90");if v4 then v4.Parent=nil;v2.Parent=nil;repeat task.wait();game.SoundService.Main.Volume=1;until not flags.noa90 v4.Parent= game.Players.LocalPlayers.PlayerGui.MainUI.Jumpscare;v2.Parent=game.ReplicatedStorage:WaitForChild("EntityInfo");end break;end end end end)
 Tab2:Toggle("Anti-Dupe",false,function(v)
 flags.nodupe=v;if v then local v2;v2=game:GetService("ReplicatedStorage").GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()task.wait();for _,v in pairs(game:GetService("Workspace").CurrentRooms:GetDescendants()) do if (v.Name=="DoorFake") then v.Hidden.CanTouch=false;end end repeat task.wait();until  not v16.nodupe v2:Disconnect();end);end end);
 Tab2:Toggle("Anti-Halt",false,function(v)
 local v2=0;while true do if v2 == 0 then _G.BypassHalte = v;
-if (_G.BypassHalte==true) then local v3=0;local v4;while true do if v3 == 0 then v4 = game:GetService("ReplicatedStorage").ClientModules.EntityModules.Shade;v4.Parent=game.Workspace;break;end end elseif (_G.BypassHalte==false) then local v5 = 0;local v6;while true do if v5 == 0 then v6 = game.Workspace.Shade;v6.Parent=game:GetService("ReplicatedStorage").ClientModules.EntityModules;break;end end end break;end end end});
+if (_G.BypassHalte==true) then local v3=0;local v4;while true do if v3 == 0 then v4 = game:GetService("ReplicatedStorage").ClientModules.EntityModules.Shade;v4.Parent=game.Workspace;break;end end elseif (_G.BypassHalte==false) then local v5 = 0;local v6;while true do if v5 == 0 then v6 = game.Workspace.Shade;v6.Parent=game:GetService("ReplicatedStorage").ClientModules.EntityModules;break;end end end break;end end end);
 Tab2:Toggle("Anti-Screech",false,function(v)
 if v then
 local Screech = game:GetService("ReplicatedStorage").Entities.Screech:Destroy()
@@ -207,14 +208,20 @@ Screech:Disconnect()
 end
 end)
 game:GetService("Workspace").DescendantAdded:Connect(function(v)
-if  not _G.antibanananana then return;end 
-if v.IsA(v,"Part") then if _G.antibanananana then 
-if (v,"BananaPeel") then v.CanTouch=false;end end end end);
+if  not _G.antibanananana then return end 
+if v:IsA("Part") then 
+if _G.antibanananana then 
+if ("BananaPeel") then 
+v.CanTouch = false 
+end 
+end 
+end 
+end)
 Tab2:Toggle("Anti-Banana",false,function(v)local v2=0;while true do if v2 == 0 then _G.antibanananana=v;if (_G.antibanananana==true) then for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do if v:IsA("Part") then if (v.Name=="BananaPeel") then v.CanTouch=false;end end end end break;end end end);
 
 game:GetService("RunService").RenderStepped:Connect(function()pcall(function()
 if _G.antije then for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Knife.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Head.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.HumanoidRootPart.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Left Arm"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Left Leg"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Right Arm"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Right Leg"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Torso.CanTouch=false;end end end end);end);
-Tab2:Toggle("Anti-Jeff",false,function(v)_G.antije=v;end);
+Tab2:Toggle("Anti-Jeff",false,function(v)_G.antije=v;end)
 Tab2:Toggle("Anti-Figure Hearing",false,function(v)
 if v then
 game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(true)
@@ -222,6 +229,12 @@ else
 game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(false)
 end
 end)    
+
+
+
+
+
+
 
 tab:Button("Button", function()
 lib:Notification("Notification", "Hello!", "Hi!")
