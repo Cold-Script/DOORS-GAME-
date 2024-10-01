@@ -80,6 +80,7 @@ end
 end
 end)
 end)
+_G.ReachPrompt = 5
 Tab:Slider("Reach Range",1,30,5,function(v)
 _G.RangePrompt = v
 end)
@@ -108,7 +109,13 @@ end
 end)
 end)
 function notify(name)
-Library:Notification("YPoint Warning", name, "OK")
+local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
+Notification:Notify(
+    {Title = "YPoint", Description = name},
+    {OutlineColor = Color3.fromRGB(80, 80, 80),Time = 5, Type = "image"},
+    {Image = "http://www.roblox.com/asset/?id=6023426923", ImageColor = Color3.fromRGB(255, 84, 84)}
+  )
 if _G.PlaySound then
 local sound = Instance.new("Sound", workspace) do
 sound.SoundId = "rbxassetid://4590662766"
@@ -141,11 +148,43 @@ else
 EntityNotifier:Disconnect()
 end
 end)
+_G.PlaySound = false
 Tab:Toggle("Sound",false,function(v)
 _G.PlaySound = v
 end)
+_G.Volume = 2
 Tab:Slider("Volume",0,5,2,function(v)
 _G.Volume = v
+end)
+local Tab2 = Window:Tab("Cheat")
+Tab2:Toggle("Anti-Eyes",false,function(v)
+if v and (workspace:FindFirstChild("Eyes")) then
+game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(-649)
+else
+game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0, -90, 0, false)
+end
+end)
+Tab2:Toggle("Anti-Lookman",false,function(v)
+if v and (workspace:FindFirstChild("Lookman")) then
+game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(-649)
+else
+game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0, -90, 0, false)
+end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
+if _G.BypassSnare then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do 
+if (v.Name=="Snare") then v.Hitbox['TouchInterest']:Destroy();end end end end);end);
+Tab2:Toggle("Anti-Snare",false,function(v)
+_G.BypassSnare = v
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.SeekArm then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("Seek_Arm") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="Seek_Arm") then v.AnimatorPart.CanTouch=false;end end end end end);end);game:GetService("RunService").RenderStepped:Connect(function()
+ pcall(function()if _G.SeekFire then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("ChandelierObstruction") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="ChandelierObstruction") then v.HurtPart.CanTouch=false;end end end end end);end);
+Tab2:Toggle("Anti-Seek Arm",false,function(v)
+_G.SeekArm = v
+end)
+Tab2:Toggle("Anti-Fire",false,function(v)_G.SeekFire = v
 end)
 
 tab:Button("Button", function()
