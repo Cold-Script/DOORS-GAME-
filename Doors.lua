@@ -37,16 +37,16 @@ v:Destroy()
 end
 end
 end
-function Distance(part, extra)
-if not extra then extra = 15 end
-if not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not part then
-return false
-end
-local distanceToPart = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part.Position).magnitude
-if distanceToPart <= extra then
-return true
-end
-return false
+function checkDistance(part, extra)
+	if not extra then extra = 15 end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not part then
+		return false
+	end
+	local distanceToPart = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - part.Position).magnitude
+	if distanceToPart <= extra then
+		return true
+	end
+	return false
 end
 local Library = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
 local Window = Library:Window("YPoint",Color3.new(7,9.9), Enum.KeyCode.RightControl)
@@ -115,12 +115,11 @@ pcall(function()
 for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") then
 v.RequiresLineOfSight = not v or true
-v.MaxActivationDistance = _G.RangePrompt
+v.MaxActivationDistance = _G.RangePrompt or 10
 end
 end
 end)
 end)
-_G.ReachPrompt = 10
 Tab:Slider("Reach Range",1,30,5,function(v)
 _G.RangePrompt = v
 end)
@@ -180,6 +179,8 @@ elseif child.Name == "AmbushMoving" and Distance(child:FindFirstChildWhichIsA("B
 notify("Ambush has spawn find the closet hide now!")
 elseif child.Name == "JeffTheKiller" then
 notify("Jeff The Killer has spawn careful it!")
+elseif child.Name == "GloomPile" then
+notify("GloomPile Spawn in next door careful and stop open the light!")    
 elseif child.Name == "FigureRagdoll" and Distance(child:FindFirstChildWhichIsA("BasePart"), 75) then
 notify("Figure near, careful!")           
 end
@@ -250,7 +251,7 @@ game:GetService("Workspace").DescendantAdded:Connect(function(v)
 if  not _G.antibanananana then return end 
 if v:IsA("Part") then 
 if _G.antibanananana then 
-if ("BananaPeel") then 
+if (v.Name == "BananaPeel") then 
 v.CanTouch = false 
 end 
 end 
@@ -277,13 +278,13 @@ Tab3:Toggle("ESP Doors",false,function(v)
 if v then 
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
-Billboard(v, "Door" .. v.Sign.Stinker.Text, Color3.fromRGB(80,255,200), "DoorESP")
+Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
 end		
 end					
 ESP1 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
-Billboard(v, "Door" .. v.Sign.Stinker.Text, Color3.fromRGB(80,255,200), "DoorESP")
+Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
 end
 end                        
 end)
@@ -292,8 +293,48 @@ ESP1:Disconnect()
 ClearESP("DoorESP")
 end		
 end)
-
-
+Tab3:Toggle("ESP Key",false,function(v)
+if v then 
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "KeyObtain" then
+Billboard(v, "Key", workspace.KeyObtain.Hitbox.Color, "KeyESP")
+end		
+end					
+ESP2 = workspace.ChildAdded:Connect(function(child)  
+for _,v in pairs(workspace:GetDescendants()) do                                        
+if v.Name == "KeyObtain" then
+Billboard(v, "Key", workspace.KeyObtain.Hitbox.Color, "KeyESP")
+end		
+end	                        
+end)
+else
+ESP2:Disconnect()
+ClearESP("KeyESP")
+end		
+end)
+Tab3:Toggle("ESP Lever",false,function(v)
+if v then 
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "LeverForGate" then
+Billboard(v, "Lever", Color3.fromRGB(80, 80, 80), "LeverESP")
+elseif v.Name == "TimerLever" then
+Billboard(v, "Timer Lever (" .. v.TakeTimer.TextLabel.Text .. ")', Color3.fromRGB(80, 80, 80), "LeverESP")
+end		
+end					
+ESP3 = workspace.ChildAdded:Connect(function(child)  
+for _,v in pairs(workspace:GetDescendants()) do                                        
+if v.Name == "LeverForGate" then
+Billboard(v, "Lever", Color3.fromRGB(80, 80, 80), "LeverESP")
+elseif v.Name == "TimerLever" then
+Billboard(v, "Timer Lever (" .. v.TakeTimer.TextLabel.Text .. ")', Color3.fromRGB(80, 80, 80), "LeverESP")                                                                
+end		
+end	                        
+end)
+else
+ESP3:Disconnect()
+ClearESP("LeverESP")
+end		
+end)
 
 
 
