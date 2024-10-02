@@ -6,14 +6,6 @@ bill = Instance.new("BillboardGui",child)
         bill.MaxDistance = 2000
         bill.Name = title
 
-        local mid = Instance.new("Frame",bill)
-        mid.AnchorPoint = Vector2.new(0.5,0.5)
-        mid.BackgroundColor3 = color
-        mid.Size = UDim2.new(0,12.5,0,12.5)
-        mid.Position = UDim2.new(0.5,0,0.5,0)
-        Instance.new("UICorner",mid).CornerRadius = UDim.new(100,0)
-        Instance.new("UIStroke",mid)
-
         local txt = Instance.new("TextLabel",bill)
         txt.AnchorPoint = Vector2.new(0.5,0.5)
         txt.BackgroundTransparency = 1
@@ -335,7 +327,62 @@ ESP3:Disconnect()
 ClearESP("LeverESP")
 end		
 end)
-
+Tab3:Toggle("ESP Vacuum",false,function(v)
+if v then               
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "SideroomSpace" then
+Billboard(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
+end		
+end					
+ESP4 = workspace.ChildAdded:Connect(function(child)                       
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "SideroomSpace" then
+Billboard(v, "Vacuum", Color3.fromRGB(80,80,80), "VacuumESP")
+end	
+end                        
+end)
+else
+ESP4:Disconnect()
+ClearESP("VacuumESP")
+end		
+end)		
+Tab3:Toggle("ESP Entity",false,function(v)
+if v then 
+for _,v in pairs(workspace.CurrentRooms:GetDescendants()) do
+if v.Name == "AmbushMoving" then
+Billboard(v, "Ambush", v.Color, "AmbushESP")
+elseif v.Name == "RushMoving" then
+Billboard(v, "Rush", Color3.fromRGB(80,80,80), "RushESP")
+elseif v.Name == "Eyes" then
+Billboard(v, "Eyes", v.Color, "EyesESP")
+elseif v.Name == "JeffTheKiller" then
+Billboard(v, "Jeff", v.Color, "JeffESP")
+elseif v.Name == "FigureRagdoll" then
+Billboard(v, "Figure", Color3.new(1), "FigureESP")
+end
+end				
+ESP5 = workspace.ChildAdded:Connect(function(child)  
+for _,v in pairs(workspace.CurrentRooms:GetDescendants()) do
+if v.Name == "AmbushMoving" then
+Billboard(v, "Ambush", Color3.fromRGB(0,255,0), "AmbushESP")
+elseif v.Name == "RushMoving" then
+Billboard(v, "Rush", Color3.fromRGB(80,80,80), "RushESP")
+elseif v.Name == "Eyes" then
+Billboard(v, "Eyes", Color3.fromRGB(0,0,255), "EyesESP")
+elseif v.Name == "JeffTheKiller" then
+Billboard(v, "Jeff", Color3.fromRGB(255,255,255), "JeffESP")
+elseif v.Name == "FigureRagdoll" then
+Billboard(v, "Figure", Color3.new(1), "FigureESP")                        
+end)
+else
+ESP5:Disconnect()
+ClearESP("AmbushESP")
+ClearESP("RushESP")
+ClearESP("EyesESP")
+ClearESP("JeffESP")
+ClearESP("FigureESP")
+end		
+end)
 
 
 
