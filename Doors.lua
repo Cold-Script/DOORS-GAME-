@@ -26,7 +26,7 @@ bill = Instance.new("BillboardGui",child)
         Instance.new("UIStroke",txt)
 task.spawn(function()
 game:GetService("RunService").RenderStepped:Connect(function()
-txt.Text = string.format("%s\n[%s studs]", name or child.Name, math.floor((game.Players.LocalPlayer.Character.Head.Position - child:GetPivot().Position).Magnitude));
+txt.Text = string.format("%s\n(%sm)", name or child.Name, math.floor((workspace.CurrentCamera.CFrame.Position - child:GetPivot().Position).Magnitude));
 end);
 end);
 end
@@ -318,7 +318,7 @@ for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "LeverForGate" then
 Billboard(v, "Lever", Color3.fromRGB(80, 80, 80), "LeverESP")
 elseif v.Name == "TimerLever" then
-Billboard(v, "Timer Lever (" .. v.TakeTimer.TextLabel.Text .. ")', Color3.fromRGB(80, 80, 80), "LeverESP")
+Billboard(v, "Timer Lever (" .. v.TakeTimer.TextLabel.Text .. ")", Color3.fromRGB(80, 80, 80), "LeverESP")
 end		
 end					
 ESP3 = workspace.ChildAdded:Connect(function(child)  
@@ -326,7 +326,7 @@ for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "LeverForGate" then
 Billboard(v, "Lever", Color3.fromRGB(80, 80, 80), "LeverESP")
 elseif v.Name == "TimerLever" then
-Billboard(v, "Timer Lever (" .. v.TakeTimer.TextLabel.Text .. ")', Color3.fromRGB(80, 80, 80), "LeverESP")                                                                
+Billboard(v, "Timer Lever (" .. v.TakeTimer.TextLabel.Text .. ")", Color3.fromRGB(80, 80, 80), "LeverESP")                                                                
 end		
 end	                        
 end)
