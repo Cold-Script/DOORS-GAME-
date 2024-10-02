@@ -145,7 +145,7 @@ local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/
 Notification:Notify(
     {Title = "YPoint", Description = name},
     {OutlineColor = Color3.fromRGB(80, 80, 80),Time = 5, Type = "image"},
-    {Image = "rbxassetid://3944668821", ImageColor = Color3.fromRGB(255, 84, 84)}
+    {Image = "rbxassetid://3944668821", ImageColor = Color3.fromRGB(255, 255, 255)}
   )
 if _G.PlaySound then
 local sound = Instance.new("Sound", workspace) do
@@ -372,7 +372,9 @@ Billboard(v, "Eyes", Color3.fromRGB(0,0,255), "EyesESP")
 elseif v.Name == "JeffTheKiller" then
 Billboard(v, "Jeff", Color3.fromRGB(255,255,255), "JeffESP")
 elseif v.Name == "FigureRagdoll" then
-Billboard(v, "Figure", Color3.new(1), "FigureESP")                        
+Billboard(v, "Figure", Color3.new(1), "FigureESP") 
+end
+end
 end)
 else
 ESP5:Disconnect()
