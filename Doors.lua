@@ -267,19 +267,23 @@ game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(true)
 else
 game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(false)
 end
-end)    
+end)   
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.SeekChase then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("TiggerEventCollision") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="TriggerEventCollision") then v:Destroy();end end end end end);end);
+Tab2:Toggle("Anti-Seek Trigger",false,function(v)_G.SeekChase = v;end)
+
 local Tab3 = Window:Tab("ESP")
-Tab2:Toggle("ESP Doors",false,function(v)
+Tab3:Toggle("ESP Doors",false,function(v)
 if v then 
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
-Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+Billboard(v, "Door" .. v.Sign.Stinker.Text, Color3.fromRGB(80,255,200), "DoorESP")
 end		
 end					
 ESP1 = workspace.ChildAdded:Connect(function(child)                       
 for _,v in pairs(workspace:GetDescendants()) do
 if v.Name == "Door" and v.Parent.Name == "Door" then
-Billboard(v, "Door", Color3.fromRGB(80,255,200), "DoorESP")
+Billboard(v, "Door" .. v.Sign.Stinker.Text, Color3.fromRGB(80,255,200), "DoorESP")
 end
 end                        
 end)
